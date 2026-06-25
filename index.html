@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Favorite Person ❤️</title>
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --primary-hover: #ff758f;
+            --bg-grad: linear-gradient(135deg, #ffe5ec, #ffb3c6);
+            --text-color: #4f5d75;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-grad);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Screen Transitions */
+        .screen {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Elements */
+        h1 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+
+        p {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        input[type="password"] {
+            padding: 12px 20px;
+            width: 80%;
+            border: 2px solid #ffb3c6;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            outline: none;
+            font-size: 1rem;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        input[type="password"]:focus {
+            border-color: var(--primary);
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s transform, 0.3s background-color;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Floating Hearts Background */
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 77, 109, 0.15);
+            font-size: 24px;
+            animation: float 6s linear infinite;
+            bottom: -50px;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-105vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Typewriter text effect */
+        .typewriter-text {
+            border-right: 2px solid var(--primary);
+            white-space: pre-wrap;
+            overflow: hidden;
+            text-align: left;
+            margin: 20px auto;
+            max-width: 90%;
+            font-style: italic;
+        }
+
+        /* Interactive Quiz options */
+        .quiz-option {
+            background: #fff0f3;
+            border: 1px solid #ffccd5;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .quiz-option:hover {
+            background: #ffccd5;
+        }
+
+        /* Final Stage Buttons */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            position: relative;
+            height: 50px;
+        }
+
+        #btn-no {
+            position: absolute;
+            background: #6c757d;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- SCREEN 1: THE LOCK SCREEN -->
+        <div id="screen-lock" class="screen active">
+            <div style="font-size: 50px; margin-bottom: 10px;">🔒</div>
+            <h1>Hey Gorgeous!</h1>
+            <p>This page is private, locked, and made only for one very special girl. Please enter your name to unlock it.</p>
+            <input type="text" id="password-input" placeholder="Your name (Hint: Starts with S)" style="padding: 12px 20px; width: 80%; border: 2px solid #ffb3c6; border-radius: 25px; margin-bottom: 20px; text-align: center; font-size:1rem; outline:none;"><br>
+            <button onclick="checkPassword()">Unlock My Gift</button>
+            <p id="lock-error" style="color: red; font-size: 0.9rem; margin-top: 10px; display: none;">Oops! That's not your name! Hint: Capital 'S' 😉</p>
+        </div>
+
+        <!-- SCREEN 2: THE LETTER -->
+        <div id="screen-letter" class="screen">
+            <div style="font-size: 40px;">💌</div>
+            <h1>For Sonali...</h1>
+            <div class="typewriter-text" id="letter-box"></div>
+            <button id="next-btn-1" style="display: none;" onclick="nextScreen('screen-quiz')">Click to Continue ✨</button>
+        </div>
+
+        <!-- SCREEN 3: THE INTERACTIVE QUIZ -->
+        <div id="screen-quiz" class="screen">
+            <div style="font-size: 40px;">🧠💝</div>
+            <h1>A Quick Test!</h1>
+            <p id="quiz-question">How much do I love you?</p>
+            <div id="quiz-options">
+                <div class="quiz-option" onclick="answerQuiz(true)">To the moon and back multiplied by infinity!</div>
+                <div class="quiz-option" onclick="answerQuiz(false)">Just a little bit.</div>
+                <div class="quiz-option" onclick="answerQuiz(false)">More than pizza, but less than sleep.</div>
+            </div>
+            <p id="quiz-feedback" style="margin-top:15px; font-weight:bold; color: var(--primary);"></p>
+        </div>
+
+        <!-- SCREEN 4: THE ULTIMATE QUESTION -->
+        <div id="screen-final" class="screen">
+            <div style="font-size: 60px; animation: beat 1s infinite alternate;">❤️</div>
+            <h1 id="final-title">Sonali, will you always be my partner-in-crime?</h1>
+            <p id="final-desc">You are my today and all of my tomorrows. What do you say?</p>
+            
+            <div class="btn-group" id="final-btns">
+                <button id="btn-yes" onclick="celebrate()">YES! 💖</button>
+                <button id="btn-no" onmouseover="moveNoButton()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Background Floating Hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 6000);
+        }
+        setInterval(createHeart, 300);
+
+        // Screen Navigation
+        function nextScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            
+            if(screenId === 'screen-letter') {
+                startTypewriter();
+            }
+        }
+
+        // Lock screen check
+        function checkPassword() {
+            const input = document.getElementById('password-input').value.trim();
+            if(input.toLowerCase() === 'sonali') {
+                nextScreen('screen-letter');
+            } else {
+                const error = document.getElementById('lock-error');
+                error.style.display = 'block';
+                error.innerText = "Hey! Only Sonali can enter this place! Try writing your beautiful name.";
+            }
+        }
+
+        // Long Romantic Letter Typewriter Effect
+        const letterText = "Dear Sonali,\n\nFrom the moment you stepped into my life, everything changed for the better. Your beautiful smile completely brightens up my darkest days, and your laughter is honestly my favorite sound in the whole world.\n\nI built this small piece of code just to show you that you are constantly on my mind. You are my best friend, my safest haven, and the love of my life. Thank you for being your perfectly incredible self, Sonali.\n\nI love you more than words can express... but let's see if you can pass my little test next!";
+        
+        let index = 0;
+        function startTypewriter() {
+            const box = document.getElementById('letter-box');
+            if (index < letterText.length) {
+                box.innerHTML += letterText.charAt(index);
+                index++;
+                setTimeout(startTypewriter, 45); // Typing speed
+            } else {
+                box.style.borderRight = "none";
+                document.getElementById('next-btn-1').style.display = "inline-block";
+            }
+        }
+
+        // Quiz Mechanics
+        function answerQuiz(isCorrect) {
+            const feedback = document.getElementById('quiz-feedback');
+            if(isCorrect) {
+                feedback.innerHTML = "Correct! Spot on! 😍 Moving to the final page...";
+                setTimeout(() => {
+                    nextScreen('screen-final');
+                }, 2000);
+            } else {
+                feedback.innerHTML = "❌ Wrong answer! Try again, I know you know the truth! 😉";
+            }
+        }
+
+        // The Trick "No" Button
+        function moveNoButton() {
+            const noBtn = document.getElementById('btn-no');
+            // Generate random positions within the container bounds
+            const x = Math.random() * 200 - 100; 
+            const y = Math.random() * 150 - 75;
+            noBtn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        // Ultimate Acceptance
+        function celebrate() {
+            document.getElementById('final-title').innerHTML = "YAY! You said YES! 🎉💖";
+            document.getElementById('final-desc').innerHTML = "You're stuck with me forever now, Sonali! I love you infinitely! Thank you for making me the happiest person alive. 😘";
+            document.getElementById('final-btns').style.display = 'none';
+            
+            // Intensify the hearts spawn rate
+            setInterval(createHeart, 50);
+        }
+    </script>
+</body>
+</html>
